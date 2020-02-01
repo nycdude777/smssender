@@ -1,40 +1,36 @@
-var MongoClient = require('mongodb').MongoClient;
+const {MongoClient} = require('mongodb');
 
 const dbHost = 'localhost:27017';
 const dbName = 'optin';
-const dbUrl = 'mongodb://' + dbHost + '/';
 
-console.log('Connecting to ' + dbUrl + '...')
+async function listDatabases(client){
+    databasesList = await client.db().admin().listDatabases();
+ 
+    console.log("Databases:");
+    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+};
 
-// Connect to the db
-const client = MongoClient.connect(dbUrl, {
-   useUnifiedTopology: true
-});
+async function main(){
+    /**
+     * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
+     * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
+     */
+    const uri = "mongodb+srv://" + dbHost + "/test?retryWrites=true&w=majority";
+ 
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+ 
+    try {
+        // Connect to the MongoDB cluster
+        await client.connect();
+ 
+        // Make the appropriate DB calls
+        await  listDatabases(client);
+ 
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+}
 
-console.log('typeof client: ' + typeof client);
-
-console.log(Object.keys(client).map(key => ' key=' + client[key] + '\n'));
-
-return;
-
-client.connect().then((mongo) => {
-    
-    console.log('Connection successful!')
-
-    console.log('Fetching top 10...')
-
-    
-
-    const dbo = mongo.db(dbName);
-    dbo.collection("zip_alert")
-        .find()
-        .limit(10)
-        .toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            dbo.close();
-      });          
-});
-
-
-
+main().catch(console.error);
