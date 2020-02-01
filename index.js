@@ -8,11 +8,15 @@ async function listDatabases(client){
     
     databasesList = await client.db().admin().listDatabases();
     
+    console.log('databaseList: ');
     console.log(databasesList);
     
-    return;
+    console.log('Enumerating db list: ');
     
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+    for(let db of databasesList.databases) {
+        console.log(` - ${db.name}`);
+    }
+    
 };
 
 async function main(){
