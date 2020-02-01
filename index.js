@@ -1,6 +1,6 @@
 const {MongoClient} = require('mongodb');
 
-const url = 'mongodb://cbmongodb03.cb:27017';
+const url = 'mongodb://cbmongodb03.cb:27017/optin';
 const dbName = 'optin';
 
 async function listDatabases(client){
@@ -23,7 +23,7 @@ async function listDatabases(client){
 async function connectToDb(client){
 
     console.log("========================");
-    console.log("Collections of  " + dbName + ":");
+    console.log("Collections of " + dbName + ":");
 
     const db = client.db(dbName);
     
@@ -34,22 +34,14 @@ async function connectToDb(client){
     console.log("========================");
 };
 
-async function main(){
-    /**
-     * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
-     * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
-     */
-    
-    console.log("Connecting to " + url);
-    
+async function method1() {
+
     // Create a new MongoClient
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-     
-    console.log("MongoClient is " + typeof client);
     
     // Use connect method to connect to the Server
     client.connect(function(err) {
-    
+
         if(err) {
             console.log(err);
             console.log("Exiting");
@@ -66,7 +58,30 @@ async function main(){
 
         client.close();
     });
+}
+
+async function method2() {
+    
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db('optin');
+        dbo.collection("zip_alert").find().limit(5).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            db.close();
+        });
+    });
+}
+
+async function main() {
+
+    /**
+     * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
+     * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
+     */
+    
+    console.log("Connecting to " + url);
 
 }
 
-main().catch(console.error);
+method2().catch(console.error);
