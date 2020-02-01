@@ -60,8 +60,4 @@ async function main(){
 
 }
 
-<<<<<<< HEAD
 main().catch(console.error);
-=======
-main().catch(console.error);
->>>>>>> e5d35d3c0e81d3828382ea45c55f40378af909e5
