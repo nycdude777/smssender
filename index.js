@@ -28,7 +28,7 @@ async function connectToDb(client){
     const db = client.db(dbName);
     
     db.collections(function(err, collections){
-        console.log('- ' + JSON.stringify(collections));
+        console.log(JSON.stringify(collections));
     });
     
     console.log("========================");
