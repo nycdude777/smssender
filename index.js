@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 const dbHost = 'localhost:27017';
 const dbName = 'optin';
-const dbUrl = 'mongodb://' + dbHost + '/' + dbName;
+const dbUrl = 'mongodb://' + dbHost + '/';
 
 console.log('Connecting to ' + dbUrl + '...')
 
@@ -13,13 +13,16 @@ MongoClient.connect(dbUrl, function (err, db) {
 
     console.log('Fetching top 10...')
 
-    db.collection("zip_alert")
+    console.log('typeof db: ' + typeof db);
+
+    const dbo = db.db(dbName);
+    dbo.collection("zip_alert")
         .find()
         .limit(10)
         .toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
-            db.close();
+            dbo.close();
       });          
 });
 
