@@ -15,9 +15,13 @@ async function main(){
      * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
      */
     
+    console.log("Begin mongo db connection test");
+    
     // Create a new MongoClient
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
  
+    console.log("MongoClient is " + typeof client);
+    
     // Database Name
     const dbName = 'myproject';
 
