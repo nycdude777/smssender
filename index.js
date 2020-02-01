@@ -7,9 +7,7 @@ const dbUrl = 'mongodb://' + dbHost + '/';
 console.log('Connecting to ' + dbUrl + '...')
 
 // Connect to the db
-const client = MongoClient.connect(dbUrl, {
-   useUnifiedTopology: true
-});
+const client = MongoClient.connect(dbUrl, { useUnifiedTopology: true }); 
 
 console.log('typeof client: ' + typeof client);
 
