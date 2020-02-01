@@ -7,15 +7,20 @@ const dbUrl = 'mongodb://' + dbHost + '/';
 console.log('Connecting to ' + dbUrl + '...')
 
 // Connect to the db
-MongoClient.connect(dbUrl, function (err, db) {
+const client = MongoClient.connect(dbUrl, {
+   useNewUrlParser: true,
+   useUnifiedTopology: true
+});
+
+client.connect().then((mongo) => {
     
     console.log('Connection successful!')
 
     console.log('Fetching top 10...')
 
-    console.log('typeof db: ' + typeof db);
+    console.log('typeof db: ' + typeof mongo);
 
-    const dbo = db.db(dbName);
+    const dbo = mongo.db(dbName);
     dbo.collection("zip_alert")
         .find()
         .limit(10)
