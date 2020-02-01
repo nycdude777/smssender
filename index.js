@@ -31,7 +31,11 @@ async function main(){
     // Use connect method to connect to the Server
     client.connect(function(err) {
     
-        assert.equal(null, err);
+        if(err) {
+            console.log(err);
+            console.log("Exiting");
+            return;
+        }
 
         console.log("Connected successfully to server");
 
