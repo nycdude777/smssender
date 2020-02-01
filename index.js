@@ -12,13 +12,19 @@ const client = MongoClient.connect(dbUrl, {
    useUnifiedTopology: true
 });
 
+console.log('typeof client: ' + typeof client);
+
+console.log(Object.keys(client).map(key => ' key=' + client[key] + '\n'));
+
+return;
+
 client.connect().then((mongo) => {
     
     console.log('Connection successful!')
 
     console.log('Fetching top 10...')
 
-    console.log('typeof db: ' + typeof mongo);
+    
 
     const dbo = mongo.db(dbName);
     dbo.collection("zip_alert")
