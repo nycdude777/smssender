@@ -1,22 +1,37 @@
 const {MongoClient} = require('mongodb');
 
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://cbmongodb03.cb:27017';
 const dbName = 'optin';
 
 async function listDatabases(client){
+
+    console.log("========================");
     console.log("Databases:");
-    
+
     databasesList = await client.db().admin().listDatabases();
     
-    console.log('databaseList: ');
     console.log(databasesList);
-    
-    console.log('Enumerating db list: ');
     
     for(let db of databasesList.databases) {
         console.log(` - ${db.name}`);
     }
     
+    console.log("========================");
+};
+
+
+async function connectToDb(client){
+
+    console.log("========================");
+    console.log("Collections of  " + dbName + ":");
+
+    const db = client.db(dbName);
+    
+    db.collectionNames(function(err, collections){
+        console.log(collections);
+    });
+    
+    console.log("========================");
 };
 
 async function main(){
@@ -25,7 +40,7 @@ async function main(){
      * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
      */
     
-    console.log("Begin mongo db connection test");
+    console.log("Connecting to " + url);
     
     // Create a new MongoClient
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -41,21 +56,15 @@ async function main(){
             return;
         }
 
-        console.log("Connected successfully to server");
+        console.log("Connected successfully!");
 
         listDatabases(client);
         
+        connectToDb(client);
+        
+        
+
         client.close();
-        
-        return;
-        
-        const db = client.db(dbName);
-
-        console.log("Connected successfully to " + dbName);
-
-        
-
-        
     });
 
 }
