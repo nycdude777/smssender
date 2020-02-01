@@ -8,7 +8,6 @@ console.log('Connecting to ' + dbUrl + '...')
 
 // Connect to the db
 const client = MongoClient.connect(dbUrl, {
-   useNewUrlParser: true,
    useUnifiedTopology: true
 });
 
