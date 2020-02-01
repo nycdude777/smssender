@@ -4,8 +4,14 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'optin';
 
 async function listDatabases(client){
-    databasesList = await client.db().admin().listDatabases();
     console.log("Databases:");
+    
+    databasesList = await client.db().admin().listDatabases();
+    
+    console.log(databasesList);
+    
+    return;
+    
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 };
 
@@ -19,26 +25,29 @@ async function main(){
     
     // Create a new MongoClient
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
- 
+     
     console.log("MongoClient is " + typeof client);
     
-    // Database Name
-    const dbName = 'myproject';
-
-
     // Use connect method to connect to the Server
     client.connect(function(err) {
+    
         assert.equal(null, err);
 
         console.log("Connected successfully to server");
 
+        listDatabases(client);
+        
+        client.close();
+        
+        return;
+        
         const db = client.db(dbName);
 
         console.log("Connected successfully to " + dbName);
 
-        listDatabases(client);
+        
 
-        client.close();
+        
     });
 
 }
